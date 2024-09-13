@@ -21,7 +21,8 @@ public class TollFreeStatus
     {
         if (!File.Exists(TollFreeVehiclesPath))
         {
-            Utilities.LogError($"InitializeCosts error: {TollFreeVehiclesPath} does not exist.");
+            Utilities.LogError($"LoadTollFreeVehicles error: {TollFreeVehiclesPath} does not exist. Initializing default values.");
+            InitializeDefaultTollFreeVehicles();
             return;
         }
 
@@ -37,6 +38,25 @@ public class TollFreeStatus
         }
 
         TollFreeVehicles = lines;
+    }
+
+    /// <summary>
+    /// Loads default values for toll prices and saves it to tollPricesPath
+    /// </summary>
+    private void InitializeDefaultTollFreeVehicles()
+    {
+        string[] tollPrices =
+        {
+            "Motorbike",
+            "Tractor",
+            "Emergency",
+            "Diplomat",
+            "Foreign",
+            "Military"
+        };
+
+        File.WriteAllLines(TollFreeVehiclesPath, tollPrices);
+        LoadTollFreeVehicles();
     }
 
     /// <summary>

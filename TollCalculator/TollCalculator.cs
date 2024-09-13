@@ -79,7 +79,8 @@ public class TollCalculator
     {
         if (!File.Exists(tollPricesPath))
         {
-            Utilities.LogError($"InitializeCosts error: {tollPricesPath} does not exist.");
+            Utilities.LogError($"InitializeCosts error: {tollPricesPath} does not exist. Initializing default values.");
+            InitializeDefaultTollPrices();
             return;
         }
 
@@ -131,6 +132,31 @@ public class TollCalculator
         {
             Utilities.LogError("InitializeCosts error: TollPrices failed vaildation");
         }
+    }
+
+    /// <summary>
+    /// Loads default values for toll prices and saves it to tollPricesPath
+    /// </summary>
+    private void InitializeDefaultTollPrices()
+    {
+        string[] tollPrices =
+        {
+            "// Start hr Start minute End hour End minute Price",
+            "0 0 6 0 0",
+            "6 0 6 30 8",
+            "6 30 7 0 13",
+            "7 0 8 0 18",
+            "8 0 8 30 13",
+            "8 30 15 0 8",
+            "15 0 15 30 13",
+            "15 30 17 0 18",
+            "17 0 18 0 13",
+            "18 0 18 30 8",
+            "18 30 24 0 0"
+        };
+
+        File.WriteAllLines(tollPricesPath, tollPrices);
+        InitializePrices();
     }
 
     /// <summary>
